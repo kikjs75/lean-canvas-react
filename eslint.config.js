@@ -25,6 +25,7 @@ export default defineConfig([
     },
     rules: {
       'react/self-closing-comp': 'warn',
+      'react/prop-types': 'off',
     },
   },
 ]);

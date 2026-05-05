@@ -1,6 +1,6 @@
 import './App.css';
-import Card1 from './components/Card1';
-import Card2 from './components/Card2';
+import Card1 from './components/CSSModules/Card1';
+import Card2 from './components/CSSModules/Card2';
 
 function App() {
   return (
