@@ -6,7 +6,7 @@ import ViewToggle from '../components/ViewToggle';
 function Home() {
   const [searchText, setSearchText] = useState('');
   const [isGridView, setIsGridView] = useState(true);
-  const dummyData = [
+  const [dummyData, setDummyData] = useState([
     {
       id: 1,
       title: '친환경 도시 농업 플랫폼',
@@ -31,7 +31,19 @@ function Home() {
       lastModified: '2023-06-01',
       category: '여행',
     },
-  ];
+  ]);
+
+  // 한 줄이 아니면 return 문 넣어야 한다.
+  // const handleDelete = id => {
+  //   setDummyData(
+  //     dummyData.filter(item => {
+  //       return item.id !== id;
+  //     }),
+  //   );
+  // };
+
+  const handleDelete = id =>
+    setDummyData(dummyData.filter(item => item.id !== id));
 
   const filteredData = dummyData.filter(item => {
     // debugger;
@@ -48,6 +60,7 @@ function Home() {
         filteredData={filteredData}
         searchText={searchText}
         isGridView={isGridView}
+        onDelete={handleDelete}
       />
     </div>
   );
