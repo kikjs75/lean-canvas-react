@@ -7,6 +7,7 @@ import Home from './pages/Home.jsx';
 import About from './pages/About.jsx';
 import Contact from './pages/Contact.jsx';
 import ErrorPage from './pages/ErrorPage.jsx';
+import CanvasDetail from './pages/CanvasDetail.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: 'contact',
         element: <Contact />,
+      },
+      {
+        path: 'canvas/:id',
+        element: <CanvasDetail />,
       },
     ],
     errorElement: <ErrorPage />,
