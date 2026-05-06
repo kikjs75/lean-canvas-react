@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, NavLink } from 'react-router-dom';
 
 function Header() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ function Header() {
         </li>
         <li>Contact</li> */}
 
-        <li>
+        {/* <li>
           <Link to="/">Home</Link>
         </li>
         <li>
@@ -23,6 +23,33 @@ function Header() {
         </li>
         <li>
           <Link to="/Contact">Contact</Link>
+        </li> */}
+
+        <li>
+          <NavLink
+            to="/"
+            className={({ isActive }) => {
+              return isActive ? 'text-blue-700' : '';
+            }}
+          >
+            Home
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/about"
+            className={({ isActive }) => (isActive ? 'text-blue-700' : '')}
+          >
+            About
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/Contact"
+            className={({ isActive }) => (isActive ? 'text-blue-700' : '')}
+          >
+            Contact
+          </NavLink>
         </li>
       </ul>
     </header>
