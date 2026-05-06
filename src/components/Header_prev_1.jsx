@@ -1,21 +1,30 @@
 import { Link, useNavigate, NavLink } from 'react-router-dom';
-import './Header.css';
 
 function Header() {
   const navigate = useNavigate();
   return (
     <header>
-      {/* <div className="nav"> */}
-      <div className="flex justify-between">
-        <div>Lean Canvas</div>
-        <nav>
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Contact</a>
-        </nav>
-        <button>짐코딩</button>
-      </div>
-      {/* <ul>
+      <ul>
+        {/* <li onClick={() => navigate('/')}>Home</li>
+        <li onClick={() => navigate('/about')}>About</li>
+        <li onClick={() => navigate('/contact')}>Contact</li> */}
+
+        {/* <li>Home</li>
+        <li>
+          <a href="/about">About</a>
+        </li>
+        <li>Contact</li> */}
+
+        {/* <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/Contact">Contact</Link>
+        </li> */}
+
         <li>
           <NavLink
             to="/"
@@ -42,7 +51,7 @@ function Header() {
             Contact
           </NavLink>
         </li>
-      </ul> */}
+      </ul>
     </header>
   );
 }
