@@ -22,7 +22,8 @@ function CanvasList({ filteredData, searchText, isGridView, onDelete }) {
             lastModified={item.lastModified}
             category={item.category}
             onDelete={e => {
-              e.preventDefault();
+              e.preventDefault(); // 기본동작 막는 메서드 : CanvasItem 컴포넌트 내에서 삭제버튼이 LINK 태그 안에 있는데 이게 랜더링 될 때 a 태그가 되어서 기본동작 막는 메서드를 사용해야한다고 한다.
+              // e.stopPropagation(); // 이벤트 전파 막는 메서드
               onDelete(item.id);
             }}
           />
