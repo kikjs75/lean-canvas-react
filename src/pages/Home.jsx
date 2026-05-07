@@ -61,7 +61,7 @@ function Home() {
       console.log('response: ', response);
       setData(response.data);
     }
-    fetchData({ title: searchText });
+    fetchData({ title_like: searchText });
   }, [searchText]);
 
   const handleDelete = id => setData(data.filter(item => item.id !== id));
