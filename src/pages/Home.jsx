@@ -5,7 +5,7 @@ import ViewToggle from '../components/ViewToggle';
 import { getCanvases } from '../api/canvas';
 
 function Home() {
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
   const [data, setData] = useState([]);
 
@@ -56,13 +56,13 @@ function Home() {
 
   // 5) (axios)경고 없음. 실행 정상. : response 의 data 응답 데이터 있고 그 외 config, header, request, status, statusText 등 추가 정보 더 있음. fetch 에는 없음.
   useEffect(() => {
-    async function fetchData() {
-      const response = await getCanvases();
+    async function fetchData(params) {
+      const response = await getCanvases(params);
       console.log('response: ', response);
       setData(response.data);
     }
-    fetchData();
-  }, []);
+    fetchData({ title: searchText });
+  }, [searchText]);
 
   const handleDelete = id => setData(data.filter(item => item.id !== id));
 
@@ -75,10 +75,11 @@ function Home() {
   //   );
   // };
 
-  const filteredData = data.filter(item => {
-    // debugger;
-    return item.title.toLowerCase().includes(searchText.toLowerCase());
-  });
+  // const filteredData = data.filter(item => {
+  //   // debugger;
+  //   return item.title.toLowerCase().includes(searchText.toLowerCase());
+  // });
+
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="mb-6 flex flex-col sm:flex-row items-center justify-between">
@@ -87,7 +88,7 @@ function Home() {
       </div>
 
       <CanvasList
-        filteredData={filteredData}
+        filteredData={data}
         searchText={searchText}
         isGridView={isGridView}
         onDelete={handleDelete}
