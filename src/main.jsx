@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         element: <Contact />,
       },
       {
-        path: 'canvas/:id',
+        path: 'canvases/:id',
         element: <CanvasDetail />,
       },
     ],
