@@ -20,7 +20,7 @@ function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header className="sticky top-0 bg-gray-800 text-white px-4">
+    <header className="sticky top-0 bg-gray-800 text-white px-4 z-30">
       {/* <div className="nav"> */}
       <div className="container mx-auto flex justify-between items-center h-14">
         <div>
