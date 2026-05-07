@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ViewToggle from '../components/ViewToggle';
@@ -6,46 +6,66 @@ import ViewToggle from '../components/ViewToggle';
 function Home() {
   const [searchText, setSearchText] = useState('');
   const [isGridView, setIsGridView] = useState(true);
-  const [dummyData, setDummyData] = useState([
-    {
-      id: 1,
-      title: '친환경 도시 농업 플랫폼',
-      lastModified: '2023-06-15',
-      category: '농업',
-    },
-    {
-      id: 2,
-      title: 'AI 기반 건강 관리 앱',
-      lastModified: '2023-06-10',
-      category: '헬스케어',
-    },
-    {
-      id: 3,
-      title: '온디맨드 물류 서비스',
-      lastModified: '2023-06-05',
-      category: '물류',
-    },
-    {
-      id: 4,
-      title: 'VR 가상 여행 서비스',
-      lastModified: '2023-06-01',
-      category: '여행',
-    },
-  ]);
+  const [data, setData] = useState([]);
+
+  // 1) 경고 있음. 실행 정상.
+  // async function fetchData() {
+  //   const data = await fetch('http://localhost:8000/canvases/')
+  //     .then(res => res.json())
+  //     .catch(error => console.log('fetch error: ', error));
+
+  //   setData(data);
+  // }
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
+
+  // 2) 경고 없음. 실행 정상.
+  useEffect(() => {
+    fetch('http://localhost:8000/canvases/')
+      .then(res => res.json())
+      .then(data => setData(data))
+      .catch(error => console.log('fetch error: ', error));
+  }, []);
+
+  // 3) 경고 없음. 실행 정상.
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     try {
+  //       const res = await fetch('http://localhost:8000/canvases/');
+  //       const data = await res.json();
+  //       setData(data);
+  //     } catch (error) {
+  //       console.log('fetch error: ', error);
+  //     }
+  //   }
+  //   fetchData();
+  // }, []);
+
+  // 4) 경고 없음. 실행 정상.
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const data = await fetch('http://localhost:8000/canvases/')
+  //       .then(res => res.json())
+  //       .catch(error => console.log('fetch error: ', error));
+
+  //     setData(data);
+  //   }
+  //   fetchData();
+  // }, []);
+
+  const handleDelete = id => setData(data.filter(item => item.id !== id));
 
   // 한 줄이 아니면 return 문 넣어야 한다.
   // const handleDelete = id => {
-  //   setDummyData(
-  //     dummyData.filter(item => {
+  //   setData(
+  //     data.filter(item => {
   //       return item.id !== id;
   //     }),
   //   );
   // };
 
-  const handleDelete = id =>
-    setDummyData(dummyData.filter(item => item.id !== id));
-
-  const filteredData = dummyData.filter(item => {
+  const filteredData = data.filter(item => {
     // debugger;
     return item.title.toLowerCase().includes(searchText.toLowerCase());
   });
