@@ -75,7 +75,7 @@ function Home() {
       {error && (
         <Error
           message={error.message}
-          onRetry={() => setRetryCount(c => c + 1)}
+          onRetry={() => fetchData({ title_like: searchText })}
         />
       )}
       {!isLoading && !error && (
