@@ -5,12 +5,14 @@ import ViewToggle from '../components/ViewToggle';
 import { getCanvases, createCanvas } from '../api/canvas';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
+import Button from '../components/Button';
 
 function Home() {
   const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
 
@@ -60,9 +62,17 @@ function Home() {
 
   const handleDelete = id => setData(data.filter(item => item.id !== id));
 
-  const handleAddCanvas = () => {
-    createCanvas();
-    fetchData({ title_like: searchText });
+  const handleCreateCanvas = async () => {
+    try {
+      setIsLoadingCreate(true);
+      await new Promise(resolver => setTimeout(resolver, 1000));
+      await createCanvas(); // await 없으면 에러 Catch 안 된다.
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    } finally {
+      setIsLoadingCreate(false);
+    }
   };
 
   return (
@@ -72,7 +82,13 @@ function Home() {
         <ViewToggle isGridView={isGridView} setIsGridView={setIsGridView} />
       </div>
 
-      <button onClick={handleAddCanvas}>등록하기</button>
+      <Button
+        isLoadingCreate={isLoadingCreate}
+        onClick={handleCreateCanvas}
+        className="flex juetify-end mb-6"
+      >
+        등록하기
+      </Button>
 
       {isLoading && <Loading />}
       {error && (
