@@ -79,7 +79,8 @@ function Note({ id, content, color: initColor, onRemoveNote, onUpdateNote }) {
         style={{ height: 'auto', minHeight: '8rem' }}
         value={editContent}
         readOnly={!isEditing}
-        onChange={handleChangeConent}
+        onChange={e => setEditContent(e.target.value)}
+        onBlur={handleChangeConent}
         ref={textareaRef}
       />
 
