@@ -11,20 +11,19 @@ import useApiRequest from '../hooks/useApiRequest';
 function Home() {
   const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  const { isLoading, error, execute: fetchData } = useApiRequest(getCanvases);
+  const {
+    isLoading,
+    error,
+    data,
+    execute: fetchData,
+  } = useApiRequest(getCanvases, { initData: [] }); // initData: [] 에서 초기값 지정.
 
   // 5) (axios)경고 없음. 실행 정상. : response 의 data 응답 데이터 있고 그 외 config, header, request, status, statusText 등 추가 정보 더 있음. fetch 에는 없음.
   useEffect(() => {
     const loadData = async () => {
-      await fetchData(
-        { title_like: searchText },
-        {
-          onSuccess: response => setData(response.data),
-          onError: err => alert(err.message),
-        },
-      );
+      await fetchData({ title_like: searchText });
     };
     loadData();
   }, [searchText, fetchData]);
@@ -35,13 +34,7 @@ function Home() {
 
     deleteDelCanvas(id, {
       onSuccess: () => {
-        fetchData(
-          { title_like: searchText },
-          {
-            onSuccess: response => setData(response.data),
-            onError: err => alert(err.message),
-          },
-        );
+        fetchData({ title_like: searchText });
       },
       onError: err => {
         alert(err.message);
@@ -55,13 +48,7 @@ function Home() {
   const handleCreateCanvas = async () => {
     createNewCanvas(null, {
       onSuccess: () => {
-        fetchData(
-          { title_like: searchText },
-          {
-            onSuccess: response => setData(response.data),
-            onError: err => alert(err.message),
-          },
-        );
+        fetchData({ title_like: searchText });
       },
       onError: err => {
         alert(err.message);
@@ -94,6 +81,7 @@ function Home() {
       {!isLoading && !error && (
         <CanvasList
           filteredData={data}
+          // filteredData={data || []}
           searchText={searchText}
           isGridView={isGridView}
           onDelete={handleDelete}
