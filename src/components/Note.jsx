@@ -8,13 +8,13 @@ const colorOptions = [
   'bg-blue-300',
   'bg-green-300',
 ];
-function Note({ id, content, onRemoveNote, onUpdateNote }) {
+function Note({ id, content, color: initColor, onRemoveNote, onUpdateNote }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState(content);
   const textareaRef = useRef(null);
   // const randomIndex = Math.floor(Math.random() * colorOptions.length); // 렌더링 중에 랜덤값을 만드는 것이라서 “순수하지 않다”고 경고. 그래서 아래 처럼 실행.
   const [color, setColor] = useState(() => {
-    // debugger;
+    if (initColor) return initColor;
     return colorOptions[Math.floor(Math.random() * colorOptions.length)];
   });
 
