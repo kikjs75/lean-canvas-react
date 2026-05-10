@@ -20,17 +20,27 @@ function Note({ id, content, color: initColor, onRemoveNote, onUpdateNote }) {
 
   useEffect(() => {
     if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height =
         textareaRef.current.scrollHeight + 'px';
     }
   }, [editContent]);
 
-  const handleCommitNote = ({ id, content }) => {
-    onUpdateNote(id, content);
+  const handleCommitNote = ({ id, content, color }) => {
+    onUpdateNote(id, content, color);
     setIsEditing(false);
   };
 
-  const handleChangeConent = e => setEditContent(e.target.value);
+  const handleChangeConent = e => {
+    console.log('Note.handleChangeConent: ', e.target.value);
+    onUpdateNote(id, e.target.value, color);
+    setEditContent(e.target.value);
+  };
+
+  const handleColorChange = newColor => {
+    setColor(newColor);
+    onUpdateNote(id, editContent, newColor);
+  };
 
   return (
     <div
@@ -47,7 +57,7 @@ function Note({ id, content, color: initColor, onRemoveNote, onUpdateNote }) {
             className="text-gray-700"
             onClick={e => {
               e.stopPropagation();
-              handleCommitNote(id, editContent);
+              handleCommitNote(id, editContent, color);
             }}
           >
             <AiOutlineCheck size={20} />
@@ -80,7 +90,7 @@ function Note({ id, content, color: initColor, onRemoveNote, onUpdateNote }) {
               key={index}
               className={`w-6 h-6 rounded-full cursor-pointer outline outline-gray-50 ${option}`}
               aria-label={`Change color to ${option}`}
-              onClick={() => setColor(option)}
+              onClick={() => handleColorChange(option)}
             />
           ))}
         </div>

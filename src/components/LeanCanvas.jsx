@@ -1,10 +1,27 @@
 import CanvasCard from './CanvasCard';
 
-function LeanCanvas({ canvas }) {
+function LeanCanvas({ canvas, onCanvasChange }) {
+  // needs : updatedCanvas => <CanvasCard> 에서 updatedNotes 받아서 업데이트 후 작성
+
+  const handleNoteChange = (section, updatedNotes) => {
+    console.log('LeanCanvas,handleNoteChange: ', { section, updatedNotes });
+    const updatedCanvas = {
+      ...canvas,
+      [section]: { ...canvas[section], notes: updatedNotes },
+    };
+    onCanvasChange(updatedCanvas);
+  };
+
   return (
     <div className="border-4 border-black">
       <div className="grid grid-cols-5">
-        <CanvasCard title="1. 문제" notes={canvas.problem.notes} />
+        <CanvasCard
+          title="1. 문제"
+          notes={canvas.problem.notes}
+          onNoteChange={updatedNotes =>
+            handleNoteChange('problem', updatedNotes)
+          }
+        />
         <CanvasCard title="4. 해결안" notes={canvas.solution.notes} />
         <CanvasCard title="3. 가치제안" notes={canvas.valueProposition.notes} />
         <CanvasCard title="5. 경쟁우위" notes={canvas.unfairAdvantage.notes} />

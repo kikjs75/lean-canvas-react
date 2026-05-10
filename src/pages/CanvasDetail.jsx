@@ -1,6 +1,6 @@
 import CanvasTitle from '../components/CanvasTitle';
 import LeanCanvas from '../components/LeanCanvas';
-import { getCanvasesById, updateTitle } from '../api/canvas';
+import { getCanvasesById, updateTitle, updateCanvas } from '../api/canvas';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -18,10 +18,17 @@ function CanvasDetail() {
 
   const handleTitleChange = async title => {
     try {
+      console.log('CanvasDetail.handleTitleChange: ', { title });
       await updateTitle(id, title);
     } catch (err) {
       alert(err.message);
     }
+  };
+
+  const handleCanvasChange = async updatedCanvas => {
+    console.log('CanvasDetail.handleCanvasChange: ', { updatedCanvas });
+    await updateCanvas(id, updatedCanvas);
+    setCanvas(updatedCanvas);
   };
 
   return (
@@ -32,7 +39,12 @@ function CanvasDetail() {
         value={canvas?.title}
         onChange={handleTitleChange}
       />
-      {canvas && <LeanCanvas canvas={canvas} />}
+      {canvas && (
+        <LeanCanvas
+          canvas={canvas}
+          onCanvasChange={updatedCanvas => handleCanvasChange(updatedCanvas)}
+        />
+      )}
     </div>
   );
 }

@@ -40,3 +40,7 @@ export async function updateTitle(id, title) {
    */
   await canvases.patch(`/${id}`, { title }); // 중괄호 안 하면 업데이트 안 됨.
 }
+
+export async function updateCanvas(id, canvas) {
+  await canvases.put(`/${id}`, canvas);
+}
