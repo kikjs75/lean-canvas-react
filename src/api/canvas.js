@@ -22,3 +22,7 @@ export function createCanvas() {
   };
   return canvases.post('/', newCanvas);
 }
+
+export async function deleteCanvas(id) {
+  await canvases.delete(`/${id}`); // 응답값은 필요 없고 완료만 기다린다"는 의도가 코드에서 명확하게 드러납
+}

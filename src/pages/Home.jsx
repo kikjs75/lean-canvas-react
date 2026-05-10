@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ViewToggle from '../components/ViewToggle';
-import { getCanvases, createCanvas } from '../api/canvas';
+import { getCanvases, createCanvas, deleteCanvas } from '../api/canvas';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
 import Button from '../components/Button';
@@ -60,7 +60,17 @@ function Home() {
     loadData();
   }, [searchText, retryCount]);
 
-  const handleDelete = id => setData(data.filter(item => item.id !== id));
+  const handleDelete = async id => {
+    if (confirm('삭제 하시겠습니까?') === false) return;
+
+    try {
+      // setData(data.filter(item => item.id !== id));
+      await deleteCanvas(id);
+      fetchData({ title_like: searchText });
+    } catch (err) {
+      alert(err.message);
+    }
+  };
 
   const handleCreateCanvas = async () => {
     try {
