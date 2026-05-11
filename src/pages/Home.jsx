@@ -31,9 +31,17 @@ function Home() {
   ///////////////////////////
   const { isLoading, error, data, refetch } = useQuery({
     queryKey: ['canvases', filter.searchText, filter.category], // searchText 바뀌면 자동 재조회. 그래서 useEffect 불필요.
-    queryFn: () =>
-      getCanvases({ title_like: filter.searchText, category: filter.category }),
-    initialData: [],
+    queryFn: () => {
+      console.log('fetch data!');
+      return getCanvases({
+        title_like: filter.searchText,
+        category: filter.category,
+      });
+    },
+    // initialData: [],
+    staleTime: 1000 * 60 * 5, // 5분 동안 신선한 상태 유지
+    cacheTime: 1000 * 60 * 10,
+    refetchOnWindowFocus: false,
   });
   ///////////////////////////
 
