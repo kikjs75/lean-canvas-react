@@ -3,7 +3,7 @@ import { canvases } from './http';
 import { v4 as uuid4 } from 'uuid';
 
 // 목록
-export function getCanvases(params) {
+export async function getCanvases(params) {
   const payload = Object.assign(
     {
       _sort: 'lastModified',
@@ -11,7 +11,8 @@ export function getCanvases(params) {
     },
     params,
   );
-  return canvases.get('/', { params: payload });
+  const { data } = await canvases.get('/', { params: payload });
+  return data;
 }
 
 export function createCanvas() {

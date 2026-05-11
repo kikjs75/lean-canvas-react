@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import CanvasList from '../components/CanvasList';
 import SearchBar from '../components/SearchBar';
 import ViewToggle from '../components/ViewToggle';
@@ -6,55 +6,51 @@ import { getCanvases, createCanvas, deleteCanvas } from '../api/canvas';
 import Loading from '../components/Loading';
 import Error from '../components/Error';
 import Button from '../components/Button';
-import useApiRequest from '../hooks/useApiRequest';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 function Home() {
+  const useClient = useQueryClient();
   const [searchText, setSearchText] = useState();
   const [isGridView, setIsGridView] = useState(true);
-  // const [data, setData] = useState([]);
 
-  const {
-    isLoading,
-    error,
-    data,
-    execute: fetchData,
-  } = useApiRequest(getCanvases, { initData: [] }); // initData: [] 에서 초기값 지정.
+  // 1) 데이터 조회
+  ///////////////////////////
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ['canvases', searchText], // searchText 바뀌면 자동 재조회. 그래서 useEffect 불필요.
+    queryFn: () => getCanvases({ title_like: searchText }),
+    initialData: [],
+  });
+  ///////////////////////////
 
-  // 5) (axios)경고 없음. 실행 정상. : response 의 data 응답 데이터 있고 그 외 config, header, request, status, statusText 등 추가 정보 더 있음. fetch 에는 없음.
-  useEffect(() => {
-    const loadData = async () => {
-      await fetchData({ title_like: searchText });
-    };
-    loadData();
-  }, [searchText, fetchData]);
+  // 2) 등록
+  ///////////////////////////
+  const { isLoading: isLoadingCreate, mutate: createNewCanvas } = useMutation({
+    mutationFn: createCanvas,
+    onSuccess: () => {
+      useClient.invalidateQueries(['canvases']);
+    },
+    onError: err => alert(err.message),
+  });
 
-  const { execute: deleteDelCanvas } = useApiRequest(deleteCanvas);
-  const handleDelete = async id => {
+  const handleCreateCanvas = () => {
+    createNewCanvas();
+  };
+  ///////////////////////////
+
+  // 3) 삭제
+  ///////////////////////////
+  const { mutate: deleteDelCanvas } = useMutation({
+    mutationFn: deleteCanvas,
+    onSuccess: () => useClient.invalidateQueries(false),
+    onError: err => alert(err.message),
+  });
+
+  const handleDelete = id => {
     if (confirm('삭제 하시겠습니까?') === false) return;
 
-    deleteDelCanvas(id, {
-      onSuccess: () => {
-        fetchData({ title_like: searchText });
-      },
-      onError: err => {
-        alert(err.message);
-      },
-    });
+    deleteDelCanvas(id);
   };
-
-  const { isLoading: isLoadingCreate, execute: createNewCanvas } =
-    useApiRequest(createCanvas);
-
-  const handleCreateCanvas = async () => {
-    createNewCanvas(null, {
-      onSuccess: () => {
-        fetchData({ title_like: searchText });
-      },
-      onError: err => {
-        alert(err.message);
-      },
-    });
-  };
+  ///////////////////////////
 
   return (
     <>
@@ -72,12 +68,7 @@ function Home() {
       </Button>
 
       {isLoading && <Loading />}
-      {error && (
-        <Error
-          message={error.message}
-          onRetry={() => fetchData({ title_like: searchText })}
-        />
-      )}
+      {error && <Error message={error.message} onRetry={refetch} />}
       {!isLoading && !error && (
         <CanvasList
           filteredData={data}
