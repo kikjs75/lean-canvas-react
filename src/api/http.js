@@ -6,8 +6,13 @@ function create(baseURL, options) {
   return instance;
 }
 
+console.log('MODE: ', import.meta.env.MODE);
+console.log('VITE_API_BASE_URL: ', import.meta.env.VITE_API_BASE_URL);
+
+// export const canvases = create(
+//   'https://json-server-vercel-phi-blond.vercel.app/canvases/',
+// );
 export const canvases = create(
-  'https://json-server-vercel-phi-blond.vercel.app/canvases/',
+  `${import.meta.env.VITE_API_BASE_URL}/canvases/`,
 );
-// export const canvases = create('http://localhost:8000/canvases/');
 // export const posts = create('http://localhost:8000/posts/');
