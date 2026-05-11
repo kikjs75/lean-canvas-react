@@ -2,7 +2,7 @@ import { FaPlus } from 'react-icons/fa';
 import Note from './Note';
 import { v4 as uuid4 } from 'uuid';
 
-function CanvasCard({ title, isSubTitle = false, notes, onNoteChange }) {
+function CanvasCard({ title, isSubTitle = false, notes = [], onNoteChange }) {
   const handleAddNote = () => {
     const newNote = {
       id: uuid4(),
